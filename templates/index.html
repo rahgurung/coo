@@ -1,0 +1,18 @@
+<!-- further extending layout -->
+{% extends "layout.html" %}
+
+<!-- further extending title tag -->
+{% block title %}
+  Welcome to Open Source Chatrooms
+{% endblock %}
+
+<!-- futher extending body tag -->
+{% block body %}
+<form>
+  <div class="form-group">
+    <label for="Name"></label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Display Name">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
