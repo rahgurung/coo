@@ -16,4 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // when new message is sent, add that to list
+    socket.on('announce send', data => {
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${DISPLAYNAMEHERE}</b>: ${data.selection}<br>`;
+        document.querySelector('#votes').append(li);
+    });
 });
