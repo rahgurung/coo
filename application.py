@@ -13,3 +13,8 @@ channels = []
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/chatbox")
+def chatbox():
+    if method == "post":
+            
