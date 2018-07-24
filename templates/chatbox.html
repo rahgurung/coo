@@ -1,0 +1,22 @@
+<!-- further extending layout -->
+{% extends "layout.html" %}
+
+<!-- further extending title tag -->
+{% block head %}
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='chatbox.js') }}"></script>
+{% endblock %}
+
+<!-- further extending title tag -->
+{% block title %}
+  Welcome to Open Source Chatrooms
+{% endblock %}
+
+<!-- futher extending body tag -->
+{% block body %}
+
+<ul id="messages">
+</ul>
+<hr>
+
+{% endblock %}

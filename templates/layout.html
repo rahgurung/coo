@@ -8,10 +8,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 
+    <!-- for extending head-->
+    {% block head %}{% endblock %}
+
+    <!-- for extending title-->
     <title>coo: {% block title %}{% endblock %}</title>
   </head>
   <body>
-    <h1>{% block body %}{% endblock %}</h1>
+      <!-- for extending body-->
+    {% block body %}{% endblock %}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
