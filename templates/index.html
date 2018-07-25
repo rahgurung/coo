@@ -6,13 +6,17 @@
   Welcome to Open Source Chatrooms
 {% endblock %}
 
+{% block head %}
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
+
 <!-- futher extending body tag -->
 {% block body %}
-<form action="/chatbox" method="post">
+<form action="/chatbox" method="post" name="Form">
   <div class="form-group">
     <label for="Name"></label>
-    <input name="name" class="form-control" placeholder="Enter Display Name">
+    <input id="id1" name="dname" class="form-control" placeholder="Enter Display Name" required>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button id="submit" type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}
