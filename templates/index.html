@@ -7,16 +7,11 @@
 {% endblock %}
 
 {% block head %}
-  <script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
 
 <!-- futher extending body tag -->
 {% block body %}
-<form action="/chatbox" method="post" name="Form">
-  <div class="form-group">
-    <label for="Name"></label>
-    <input id="id1" name="dname" class="form-control" placeholder="Enter Display Name" required>
-  </div>
-  <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-</form>
+  <h3> Here is your gateway to coo, the open source messaging platform</h3>
+  <a href="/login"> LetsGo ! </a>
+
 {% endblock %}

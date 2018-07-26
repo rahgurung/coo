@@ -22,31 +22,38 @@ channels = []
 def index():
     return render_template("index.html")
 
-@app.route("/chatbox", methods = ['GET', 'POST'])
-def chatbox():
+@app.route("/login", methods = ['GET', 'POST'])
+def login():
     if request.method == "POST":
 
-        # getting displayname of user
-        dname = request.form.get("dname")
+        # adding it to the session
+        session["d_name"] = request.form.get("dname")
 
-        # remember which user has logged in
-        session["d_name"] = dname
+        # returning login page
+        return render_template("login.html")
 
-        #
-    elif:
+    elif request.method == "GET":
 
-        # checking if session is there
+        # returning login page
+        return render_template("login.html")
 
-        #showing list of channels
+@app.route("/logout")
+def logout():
+
+    # clearing the session
+    session.clear()
+
+    # returning index page
+    return render_template("index.html")
 
 @app.route("/new_room", methods = ['GET', 'POST'])
-def new_room:
+def new_room():
     if request.method == "POST":
 
         #create new room
-
+        return 0;
         #redirect to chatbox
 
 @app.route("/chatbox/<room>", methods = ['GET', 'POST'])
-def chatroom:
-                     
+def chatroom():
+    return 0;
