@@ -20,6 +20,8 @@ channels = []
 
 @app.route("/")
 def index():
+    session.clear()
+    session["logged_in"] = 0
     return render_template("index.html")
 
 @app.route("/login", methods = ['GET', 'POST'])
@@ -29,31 +31,33 @@ def login():
         # adding it to the session
         session["d_name"] = request.form.get("dname")
 
+        # adding the logged_in trigger
+        session["logged_in"] = 1
+
+        # getting Name
+        name = session["d_name"]
+
         # returning login page
-        return render_template("login.html")
+        return render_template("login.html", name = name)
 
     elif request.method == "GET":
 
-        # returning login page
-        return render_template("login.html")
+        if session["logged_in"] == 1:
+
+            name = session["d_name"]
+
+            return render_template("login.html", name = name)
+
+        else:
+        # returning login page with display name
+            return render_template("login.html")
 
 @app.route("/logout")
 def logout():
 
     # clearing the session
     session.clear()
+    session["logged_in"] = 0
 
     # returning index page
     return render_template("index.html")
-
-@app.route("/new_room", methods = ['GET', 'POST'])
-def new_room():
-    if request.method == "POST":
-
-        #create new room
-        return 0;
-        #redirect to chatbox
-
-@app.route("/chatbox/<room>", methods = ['GET', 'POST'])
-def chatroom():
-    return 0;
