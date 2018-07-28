@@ -20,12 +20,18 @@ channels = []
 
 @app.route("/")
 def index():
+
+    # clearing session
     session.clear()
+
+    # setting logged_in to which mean we are not logged in
     session["logged_in"] = 0
+
+    # returning our basic index page
     return render_template("index.html")
 
-@app.route("/login", methods = ['GET', 'POST'])
-def login():
+@app.route("/home", methods = ['GET', 'POST'])
+def home():
     if request.method == "POST":
 
         # adding it to the session
@@ -38,25 +44,30 @@ def login():
         name = session["d_name"]
 
         # returning login page
-        return render_template("login.html", name = name)
+        return render_template("home.html", name = name)
 
     elif request.method == "GET":
 
+        # checking if we are logged in
         if session["logged_in"] == 1:
 
+            # getting display name from session
             name = session["d_name"]
 
-            return render_template("login.html", name = name)
+            # returning home with display name
+            return render_template("home.html", name = name)
 
         else:
-        # returning login page with display name
-            return render_template("login.html")
+            # returning home page without display name
+            return render_template("home.html")
 
 @app.route("/logout")
 def logout():
 
     # clearing the session
     session.clear()
+
+    # setting logged_in to 0 which means we aren't logged in
     session["logged_in"] = 0
 
     # returning index page
