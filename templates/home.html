@@ -1,0 +1,53 @@
+<!-- further extending layout -->
+{% extends "layout.html" %}
+
+<!-- further extending title tag -->
+{% block title %}
+  Welcome to Open Source Chatrooms
+{% endblock %}
+
+{% block head %}
+  <script src="{{ url_for('static', filename='inputErrorChecking.js') }}"></script>
+  <script src="{{ url_for('static', filename='channel.js') }}"></script>
+{% endblock %}
+
+<!-- futher extending body tag -->
+{% block body %}
+
+  {% if session.d_name %}
+  <!-- display channels -->
+  Choose any channel:
+<!-- -->
+  <!-- break -->
+  <br>
+
+
+  <button class="btn btn-primary">Create New Channel</button>
+  <form id="channel" action="/home" method="post" name="Form">
+    <div class="form-group">
+      <label for="Name"></label>
+      <input id="id1" name="dname" class="form-control" placeholder="Enter Channel   Name" required>
+    </div>
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <!-- break -->
+  <br>
+  You are : <b>{{ name }}</b>
+
+  <!-- break -->
+  <br>
+ <a href="/logout"> Logout</a>
+  {% else %}
+
+  <!-- display login form  -->
+  <form action="/home" method="post" name="Form">
+    <div class="form-group">
+      <label for="Name"></label>
+      <input id="id1" name="dname" class="form-control" placeholder="Enter Display Name" required>
+    </div>
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% endif %}
+
+{% endblock %}
