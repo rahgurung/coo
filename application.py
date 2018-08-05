@@ -61,6 +61,9 @@ def home():
             # returning home page without display name
             return render_template("home.html")
 
+def channel():
+                
+
 @app.route("/logout")
 def logout():
 
