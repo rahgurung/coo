@@ -1,0 +1,36 @@
+<!-- further extending layout -->
+{% extends "layout.html" %}
+
+<!-- further extending title tag -->
+{% block title %}
+  Welcome to Open Source Chatrooms
+{% endblock %}
+
+{% block head %}
+  <script src="{{ url_for('static', filename='inputErrorChecking.js') }}"></script>
+  <script src="{{ url_for('static', filename='channel.js') }}"></script>
+{% endblock %}
+
+<!-- futher extending body tag -->
+{% block body %}
+
+  {% if session.d_name %}
+
+  <form action="" method="post" name="form">
+    Channel name:<br>
+    <input id="id1" type="text" name="channel_name" placeholder="Enter Name of Channel">
+    <br><br>
+    <input id="submit" type="submit" value="Submit">
+  </form>
+
+  <!-- break -->
+  <br>
+
+
+  {% else %}
+
+  <!-- display login error  -->
+  Please Log In With a Display Name to Create Channels.
+  {% endif %}
+
+{% endblock %}

@@ -21,12 +21,15 @@
   <!-- break -->
   <br>
 
-  <form action="/channel" method="post">
-  <button id = "createChannelButton" class="btn btn-primary">Create New Channel</button>
-  </form>
+  <a href="/channelcreate">Create New Channel </a>
 
 
   <!-- break -->
+  {% for channel in channels %}
+  {{channel}}
+  {%endfor%}
+
+
   <br>
   You are : <b>{{ name }}</b>
 
@@ -36,7 +39,7 @@
   {% else %}
 
   <!-- display login form  -->
-  <form action="/home" method="post" name="Form">
+  <form action="" method="post" name="Form">
     <div class="form-group">
       <label for="Name"></label>
       <input id="id1" name="dname" class="form-control" placeholder="Enter Display Name" required>

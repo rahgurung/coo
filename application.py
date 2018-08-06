@@ -44,7 +44,7 @@ def home():
         name = session["d_name"]
 
         # returning login page
-        return render_template("home.html", name = name)
+        return render_template("home.html", name = name, channels = channels)
 
     elif request.method == "GET":
 
@@ -55,14 +55,38 @@ def home():
             name = session["d_name"]
 
             # returning home with display name
-            return render_template("home.html", name = name)
+            return render_template("home.html", name = name, channels = channels)
 
         else:
             # returning home page without display name
             return render_template("home.html")
 
-def channel():
-                
+@app.route("/channelcreate", methods= ['GET', 'POST'])
+def channelcreate():
+
+    #checking method
+    if request.method == "GET":
+
+        return render_template("channelcreate.html")
+
+    elif request.method == "POST":
+
+        # get the name of channel
+        channel_name = request.form.get("channel_name")
+
+        # error check
+        if not channel_name:
+            return render_template("channelcreate.html")
+
+        # check if channel name is already there
+        if channel_name in channels:
+            return render_template("channelcreate.html")
+
+        # add channel to the list    
+        channels.append(channel_name)
+
+        return redirect(url_for('home'))
+
 
 @app.route("/logout")
 def logout():
