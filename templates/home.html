@@ -8,7 +8,6 @@
 
 {% block head %}
   <script src="{{ url_for('static', filename='inputErrorChecking.js') }}"></script>
-  <script src="{{ url_for('static', filename='channel.js') }}"></script>
 {% endblock %}
 
 <!-- futher extending body tag -->
@@ -26,7 +25,9 @@
 
   <!-- break -->
   {% for channel in channels %}
-  {{channel}}
+  <ul>
+  <li>{{channel}}</li>
+</ul>
   {%endfor%}
 
 
