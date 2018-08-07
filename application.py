@@ -82,10 +82,16 @@ def channelcreate():
         if channel_name in channels:
             return render_template("channelcreate.html")
 
-        # add channel to the list    
+        # add channel to the list
         channels.append(channel_name)
 
         return redirect(url_for('home'))
+
+@app.route("/channel/<channel_name>")
+def showchannel(channel_name):
+    if channel_name not in channels:
+        return "This channel is not there."
+    return f"You are in, {channel_name} !"
 
 
 @app.route("/logout")
