@@ -91,8 +91,16 @@ def channelcreate():
 def showchannel(channel_name):
     if channel_name not in channels:
         return "This channel is not there."
-    return f"You are in, {channel_name} !"
+    return render_template("chatbox.html", channel_name = channel_name)
 
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
 
 @app.route("/logout")
 def logout():

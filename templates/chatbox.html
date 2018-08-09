@@ -9,13 +9,20 @@
 
 <!-- further extending title tag -->
 {% block title %}
-  Welcome to Open Source Chatrooms
+  Welcome to {{channel_name}}.
 {% endblock %}
 
 <!-- futher extending body tag -->
 {% block body %}
+ <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
 
-<h2> Choose a room to begin talking </h2>
-You are : {{ name.d_name }}
+ <div class="message_holder"></div>
+
+<form action="" method="post" name="form">
+  <br>
+  <input id="id1" type="text" class="message" name="message" placeholder="Message">
+  <br><br>
+  <input id="submit" type="submit" value="Send">
+</form>
 
 {% endblock %}

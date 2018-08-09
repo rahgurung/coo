@@ -1,24 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+        data: 'User Connected'
+      } )
 
-    // When connected, configure chatbox
-    socket.on('connect', () => {
+      var form = $( 'form' ).on( 'submit', function( e ) {
+        e.preventDefault()
+        let user_input = $( 'input.message' ).val()
+        socket.emit( 'my event', {
+          message : user_input
+        } )
+        $( 'input.message' ).val( '' ).focus()
+      } )
+    } )
 
-        //input box should spit messages
-        document.querySelector('send', () => {
-            send.onclick = () => {
-              const message = send.dataset.message;
-              socket.emit('send message', {'message': message})
-            };
-        });
-    });
-
-    // when new message is sent, add that to list
-    socket.on('announce send', data => {
-        const li = document.createElement('li');
-        li.innerHTML = `<b>${DISPLAYNAMEHERE}</b>: ${data.selection}<br>`;
-        document.querySelector('#votes').append(li);
-    });
+    socket.on( 'my response', function( msg ) {
+      console.log( msg )
+      if( msg.message) {
+        $( 'h3' ).remove()
+        $( 'div.message_holder' ).append( '<div><b style="color: #000">  '+msg.message+'</div>' )
+      }
+    })
 });
