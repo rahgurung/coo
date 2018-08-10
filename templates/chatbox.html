@@ -9,7 +9,7 @@
 
 <!-- further extending title tag -->
 {% block title %}
-  Welcome to {{channel_name}}.
+  {{channel_name}}
 {% endblock %}
 
 <!-- futher extending body tag -->
@@ -18,7 +18,7 @@
 
  <div class="message_holder"></div>
 
-<form action="" method="post" name="form">
+<form action="/channel/{{channel_name}}" method="post" name="form">
   <br>
   <input id="id1" type="text" class="message" name="message" placeholder="Message">
   <br><br>

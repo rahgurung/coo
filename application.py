@@ -2,8 +2,9 @@ import os
 
 from flask import Flask, session, render_template, url_for, request, redirect, jsonify
 from flask_session import Session
+import random, json, time, datetime
 
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 # configure the flask_socketio
 app = Flask(__name__)
@@ -16,7 +17,29 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # list of channels
-channels = []
+channels = ["General"]
+user_list = []
+
+# Dictionary of users & messages
+user_dm_list = {}
+
+# dictionary to track rooms, or private channels
+# Rooms = {"dn:" displayname, "room": room}
+Rooms = {}
+
+now = datetime.datetime.now()
+
+startup_message = {
+    "channel": "General",
+    "user_from": "Flack Bot",
+    "user_to": "",
+    "timestamp": now.strftime("%a %b %d %I:%M:%S %Y"),
+    "msg_txt": "Welcome to Flack Messaging"}
+
+channel_messages = {
+    "General": {
+        'messages': [startup_message]
+}}
 
 @app.route("/")
 def index():
@@ -30,6 +53,7 @@ def index():
     # returning our basic index page
     return render_template("index.html")
 
+# handles home where list of channel is there with logout button
 @app.route("/home", methods = ['GET', 'POST'])
 def home():
     if request.method == "POST":
@@ -61,6 +85,7 @@ def home():
             # returning home page without display name
             return render_template("home.html")
 
+# handles channel create button which loads channel creation page
 @app.route("/channelcreate", methods= ['GET', 'POST'])
 def channelcreate():
 
@@ -87,6 +112,7 @@ def channelcreate():
 
         return redirect(url_for('home'))
 
+# handles the chatrooms
 @app.route("/channel/<channel_name>")
 def showchannel(channel_name):
     if channel_name not in channels:
@@ -96,12 +122,12 @@ def showchannel(channel_name):
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
-
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
 
+# handles the logout button
 @app.route("/logout")
 def logout():
 
