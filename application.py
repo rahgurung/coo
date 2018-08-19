@@ -43,13 +43,6 @@ channel_messages = {
 
 @app.route("/")
 def index():
-
-    # clearing session
-    session.clear()
-
-    # setting logged_in to which mean we are not logged in
-    session["logged_in"] = 0
-
     # returning our basic index page
     return render_template("index.html")
 
@@ -113,29 +106,13 @@ def channelcreate():
         return redirect(url_for('home'))
 
 # handles the chatrooms
-@app.route("/channel/<channel_name>")
-def showchannel(channel_name):
-    if channel_name not in channels:
-        return "This channel is not there."
-    return render_template("chatbox.html", channel_name = channel_name)
-
-def messageReceived(methods=['GET', 'POST']):
-    print('message was received!!!')
-
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
+@app.route("/coochat", methods=["POST", "GET"])
+def flackchat():
+    user = session["d_name"]
+    return render_template("chatbox.html", name=user)
 
 # handles the logout button
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
-
-    # clearing the session
-    session.clear()
-
-    # setting logged_in to 0 which means we aren't logged in
-    session["logged_in"] = 0
-
     # returning index page
     return render_template("index.html")

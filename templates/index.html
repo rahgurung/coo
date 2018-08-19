@@ -11,7 +11,15 @@
 
 <!-- futher extending body tag -->
 {% block body %}
-  <h3> Here is your gateway to coo, the open source messaging platform</h3>
-  <a href="/home"> LetsGo ! </a>
-
+  <h2 id="myname"></h2>
+  <h4 id="welcome"></h4>
+  <p>
+    <form id="login_form" action="{{ url_for('coochat') }}", method="post">
+      <table>
+        <tr>
+          <td class="bold">Display Name:</td>
+          <td><input id="dname_field" type="text" name="displayname" size="50" required></td></tr>
+      </table>
+      <button name="signin" id="signin">Sign In</button><input type="reset">
+    </form>
 {% endblock %}
