@@ -107,7 +107,7 @@ def channelcreate():
 
 # handles the chatrooms
 @app.route("/coochat", methods=["POST", "GET"])
-def flackchat():
+def coochat():
     user = session["d_name"]
     return render_template("chatbox.html", name=user)
 
