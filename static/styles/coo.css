@@ -5,7 +5,7 @@
 
   /* Style the header */
 header {
-      background-color: #f7f6b9;
+      background-color: grey;
       padding: 30px;
       text-align: center;
       font-size: 18pt;
@@ -14,7 +14,7 @@ header {
 nav {
     float: left;
     width: 30%;
-    background: #f7f6b9;
+    background: #3D3A39;
     padding: 10px;
     border-style: solid none none none;
     border-color: #9cc105;
@@ -24,7 +24,7 @@ article {
         float: left;
         padding: 20px;
         width: 70%;
-        background-color: #f3f4d9;
+        background-color: #3D3A39;
         border-style: solid dashed solid dashed;
         border-color: #9cc105;
         }
@@ -69,7 +69,7 @@ textarea {
 
 body {
      font-family: Arial, Helvetica, sans-serif;
-     background-color: #f7f6b9;}
+     background-color: #3D3A39;}
      }
 
 div {
