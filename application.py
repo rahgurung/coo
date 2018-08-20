@@ -55,10 +55,10 @@ def logout():
 
 
 # this handles the whole chatrooms
-@app.route("/coochat", methods=["POST", "GET"])
-def coochat():
-    user = session["d_name"]
-    return render_template("chatbox.html", name=user)
+@app.route("/chatbox", methods=["POST", "GET"])
+def chatbox():
+     user = request.form.get("displayname")
+     return render_template("chatbox.html", name=user)
 
 
 # this is a event of submitting channel to create
@@ -82,3 +82,11 @@ def query_channels():
 @app.route("/query_users", methods=["POST"])
 def query_users():
     return jsonify({"success": True, "active_users": user_list})
+
+# this is the backend to support querying for
+# messages in a channel
+@app.route("/query_messages", methods=["POST"])
+def fetch_messages():
+    channel = request.form.get("channel")
+    dn = request.form.get("displayname")
+    msg_status = request.form.get("msg_type")

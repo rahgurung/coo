@@ -14,15 +14,42 @@
 
 <!-- futher extending body tag -->
 {% block body %}
- <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
 
- <div class="message_holder"></div>
+<header>
+	  Logged in as <div id="dname">{{ name }}</div>
+</header>
 
-<form action="/channel/{{channel_name}}" method="post" name="form">
-  <br>
-  <input id="id1" type="text" class="message" name="message" placeholder="Message">
-  <br><br>
-  <input id="submit" type="submit" value="Send">
-</form>
+<section>
+  <nav>
+    Channels <p>
+    <p>
+      <table class="hoverTable" id="hoverTable">
+      </table>
+    <p>
+    <form id="new_channel">
+      <input id="channel_name" type="text" name="new_channel" class="chn_name" autocomplete="off" autofocus placeholder="new_channel">
+      <input class="btn btn-primary" id="submit" type=submit>
+    </form>
+    <p>
+      Direct Messages<br>
+      <table class="hoverTable" id="user_list">
+	    </table>
+      <p>
+      <button id="logout_button" type=submit>Log Out</button>
+  </nav>
 
+  <article>
+    <h4 id="message_header">Messages</h4>
+    <table class="hoverTable" id="message_list">
+	  </table>
+    <h4>Enter new message</h4>
+    <form id="new_message">
+      <textarea class="newchn_msg" id="message_text" placeholder="Enter message here" wrap="soft">
+	    </textarea>
+      <input type="hidden" value= {{ name }} id="displayname">
+      <input id="msg_submit" type="submit">
+    </form>
+
+  </article>
+</section>
 {% endblock %}
