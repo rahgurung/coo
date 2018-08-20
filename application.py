@@ -41,78 +41,44 @@ channel_messages = {
         'messages': [startup_message]
 }}
 
+# this is our index page
 @app.route("/")
 def index():
-    # returning our basic index page
     return render_template("index.html")
 
-# handles home where list of channel is there with logout button
-@app.route("/home", methods = ['GET', 'POST'])
-def home():
-    if request.method == "POST":
 
-        # adding it to the session
-        session["d_name"] = request.form.get("dname")
+# this function handles the logout button and returns
+# index page as a result
+@app.route("/logout", methods=["POST"])
+def logout():
+    return render_template("index.html")
 
-        # adding the logged_in trigger
-        session["logged_in"] = 1
 
-        # getting Name
-        name = session["d_name"]
-
-        # returning login page
-        return render_template("home.html", name = name, channels = channels)
-
-    elif request.method == "GET":
-
-        # checking if we are logged in
-        if session["logged_in"] == 1:
-
-            # getting display name from session
-            name = session["d_name"]
-
-            # returning home with display name
-            return render_template("home.html", name = name, channels = channels)
-
-        else:
-            # returning home page without display name
-            return render_template("home.html")
-
-# handles channel create button which loads channel creation page
-@app.route("/channelcreate", methods= ['GET', 'POST'])
-def channelcreate():
-
-    #checking method
-    if request.method == "GET":
-
-        return render_template("channelcreate.html")
-
-    elif request.method == "POST":
-
-        # get the name of channel
-        channel_name = request.form.get("channel_name")
-
-        # error check
-        if not channel_name:
-            return render_template("channelcreate.html")
-
-        # check if channel name is already there
-        if channel_name in channels:
-            return render_template("channelcreate.html")
-
-        # add channel to the list
-        channels.append(channel_name)
-
-        return redirect(url_for('home'))
-
-# handles the chatrooms
+# this handles the whole chatrooms
 @app.route("/coochat", methods=["POST", "GET"])
 def coochat():
     user = session["d_name"]
     return render_template("chatbox.html", name=user)
 
-# handles the logout button
-@app.route("/logout", methods=["POST"])
-def logout():
-    # returning index page
-    return render_template("index.html")
+
+# this is a event of submitting channel to create
+# a new channel
+@socketio.on("submit channel")
+def new_channel(data):
+    channel = data["channel"]
+    channel_list.append(channel)
+    emit("announce channel", {"channel": channel}, broadcast=True)
+    return 1
+
+# this is the backend to support querying for
+# list of new available channels
+@app.route("/query_channels", methods=["POST"])
+def query_channels():
+    return jsonify({"success": True, "channel_list": channel_list})
+
+
+# this is the backend to support querying for
+# users in a channel
+@app.route("/query_users", methods=["POST"])
+def query_users():
+    return jsonify({"success": True, "active_users": user_list})
