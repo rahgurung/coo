@@ -107,4 +107,54 @@ def fetch_messages():
                     all_msgs.append(msg)
                 return jsonify({"success": True, "channel_msgs": all_msgs})
     else:
-        return jsonify({"success": False, "error_msg": "No messages"})            
+        return jsonify({"success": False, "error_msg": "No messages"})
+
+# this is the socketio backend to handle the submit messages
+# event in the flask, it shows public channel
+@socketio.on("submit message")
+def new_message(data):
+    channel = data["channel"]
+    user_from = data["user_from"]
+    msg_txt = data["msg_txt"]
+    timestamp = time.asctime( time.localtime( time.time() ) )
+
+    msg = {"channel": channel,
+           "user_from": user_from,
+           "user_to": channel,
+           "timestamp": timestamp,
+           "msg_txt": msg_txt}
+
+    if channel in channel_messages:
+         # Public Channel with messages
+        msgs = channel_messages[channel]
+        msg["msg_type"] = "PUBLIC"
+        if len(msgs['messages']) >= 100:
+            del msgs['messages'][0]
+        msgs['messages'].append(msg)
+        emit("announce message", msg, broadcast=True)
+        return jsonify ({"success": True, "msg_type": "PUBLIC"})
+    else:
+        if (not (channel in user_dm_list)):
+            # public channel, first message
+            msg["msg_type"] = "PUBLIC"
+            channel_messages[channel] = {"channel": channel, "messages": [msg]}
+            emit("announce message", msg, broadcast=True)
+            return jsonify ({"success": True, "msg_type": "PUBLIC"})
+        else:
+            # private message
+            msg["msg_type"] = "PRIVATE"
+            if (channel in user_dm_list):
+                for user in [user_from, channel]:
+                    msgs = user_dm_list[user]
+                    if len(msgs['messages']) >= 100:
+                        del msgs['messages'][0]
+                    msgs['messages'].append(msg)
+            else:
+                user_dm_list[user] = {"channel": channel, "messages": [msg]}
+            print (f"NM: emit msg to ", user_from)
+            msg["channel"] = channel
+            emit("announce message", msg, room=Rooms[user_from])
+            print (f"NM: emit msg to ", channel)
+            msg["channel"] = user_from
+            emit("announce message", msg, room=Rooms[channel])
+            return jsonify ({"success": True, "msg_type": "PRIVATE"})
