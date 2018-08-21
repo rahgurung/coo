@@ -1,22 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
+var global_channel_list = [];
+var global_user_list = [];
+var global_current_channel;
+var msgType = "PUBLIC";
+let displayname = localStorage.getItem('displayname');;
 
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    socket.on( 'connect', function() {
-        socket.emit( 'my event', {  data: 'User Connected'} );
 
-      var form = $( 'form' ).on( 'submit', function( e ) {
-        e.preventDefault()
-        let user_input = $( 'input.message' ).val()
-        socket.emit( 'my event', {message : user_input} );
-        $( 'input.message' ).val( '' ).focus()
-      } );
-    } );
+// this function weighs and unweighs the channel
+// chn means channel parameter here
+function clickhandler(chn) {
+  if (global_channel_list.includes(global_current_channel)) {
+    document.getElementbyId(global_current_channel).style.fontWeight = "normal";
+  }
 
-    socket.on( 'my response', function( msg ) {
-      console.log( msg )
-      if( msg.message) {
-        $( 'h3' ).remove()
-        $( 'div.message_holder' ).append( '<div><b style="color: #000">  '+msg.message+'</div>' )
-      }
-    });
-});
+  global_current_channel = chn;
+  msgType = "PUBLIC";
+  let header = document.getElementbyId("message_header");
+
+  document.getElementbyId(global_current_channel).style.fontWeight = "bold";
+  header.innerHTML = " Messages on " + global_current_channel + "channel";
+  localStorage.setItem("channel", global_current_channel)
+  configure_msgs(global_current_channel, msgType)
+}
+
+
+// this function weighs the new channel and unweighs the old channel
+// chn means channel parameter here
+function dm_clickhandler(usr) {
+    let header = document.getElementById("message_header");
+    msgType = "PRIVATE";
+
+    document.getElementById(global_current_channel).style.fontWeight = "normal";
+
+    global_current_channel = usr;
+    document.getElementById(usr).style.fontWeight = "bold";
+
+    hdr.innerHTML = "Conversations with " + usr;
+    configure_msgs(usr, msgType);
+}

@@ -90,3 +90,21 @@ def fetch_messages():
     channel = request.form.get("channel")
     dn = request.form.get("displayname")
     msg_status = request.form.get("msg_type")
+
+    if (msg_status == "PUBLIC"):
+        my_msgs = channel_messages.get(channel)
+    else:
+        my_msgs = user_dm_list.get(channel)
+
+    if my_msgs:
+        msglist = my_msgs['messages']
+        if ((msg_status == 'PUBLIC') or (channel == dn)):
+            return jsonify({"success": True, "channel_msgs": msglist})
+        else:
+            all_msgs = []
+            for msg in msglist:
+                if((msg["user_from"] == dn) or (msg["user_to"] == dn)):
+                    all_msgs.append(msg)
+                return jsonify({"success": True, "channel_msgs": all_msgs})
+    else:
+        return jsonify({"success": False, "error_msg": "No messages"})            
