@@ -70,6 +70,7 @@ def new_channel(data):
     emit("announce channel", {"channel": channel}, broadcast=True)
     return 1
 
+
 # this is the backend to support querying for
 # list of new available channels
 @app.route("/query_channels", methods=["POST"])
@@ -82,6 +83,7 @@ def query_channels():
 @app.route("/query_users", methods=["POST"])
 def query_users():
     return jsonify({"success": True, "active_users": user_list})
+
 
 # this is the backend to support querying for
 # messages in a channel
@@ -109,8 +111,12 @@ def fetch_messages():
     else:
         return jsonify({"success": False, "error_msg": "No messages"})
 
+
 # this is the socketio backend to handle the submit messages
 # event in the flask, it shows public channel
+# first of all we see if channel is in channel_messages as those
+# are public channel with messages , then we check public channel
+# with first message and then we go for private messages
 @socketio.on("submit message")
 def new_message(data):
     channel = data["channel"]
@@ -125,7 +131,6 @@ def new_message(data):
            "msg_txt": msg_txt}
 
     if channel in channel_messages:
-         # Public Channel with messages
         msgs = channel_messages[channel]
         msg["msg_type"] = "PUBLIC"
         if len(msgs['messages']) >= 100:
@@ -135,13 +140,11 @@ def new_message(data):
         return jsonify ({"success": True, "msg_type": "PUBLIC"})
     else:
         if (not (channel in user_dm_list)):
-            # public channel, first message
             msg["msg_type"] = "PUBLIC"
             channel_messages[channel] = {"channel": channel, "messages": [msg]}
             emit("announce message", msg, broadcast=True)
             return jsonify ({"success": True, "msg_type": "PUBLIC"})
         else:
-            # private message
             msg["msg_type"] = "PRIVATE"
             if (channel in user_dm_list):
                 for user in [user_from, channel]:
@@ -158,3 +161,46 @@ def new_message(data):
             msg["channel"] = user_from
             emit("announce message", msg, room=Rooms[channel])
             return jsonify ({"success": True, "msg_type": "PRIVATE"})
+
+
+# join channel event for joining the channel or room
+@socketio.on('join')
+def on_join(data):
+    username = data['displayname']
+    if (username == ""):
+        return jsonify ({"success": False, "error_msg": "No text entered"})
+
+    if (not (username in user_list)):
+        user_list.append(username)
+        user_dm_list[username] = ({"channel": username, "messages": []})
+        emit("new user", {"username": username}, broadcast= True)
+    else:
+        emit("user logged in", {"username": username}, broadcast=True)
+
+    room = data['room']
+    join_room(room)
+    Rooms[username] = room
+    print (f"username ", username, "has room ", Rooms[username])
+    return jsonify ({"success": True})
+
+
+# socketio logout event to log user out
+@socketio.on('logout user')
+def on_leave(data):
+    username = data['displayname']
+    print (f"username ", username, " logging out")
+    room = Rooms[username]
+    leave_room(room)
+    del Rooms[username]
+    emit("user logged out", {"username": username}, broadcast=True)
+
+
+# socketio leave backend to support to leave a channel or room
+@socketio.on('leave')
+def on_leave(data):
+    username = data['displayname']
+    print (f"username ", username, " logging out")
+    room = Rooms[username]
+    leave_room(room)
+    del Rooms[username]
+    emit("user logged out", {"username": username}, broadcast=True)
