@@ -64,3 +64,154 @@ function add_channel(chn, selected) {
     clickhandler(chn);
   }
 }
+
+// this function activates a user
+function activate_user(usr) {
+  const logged_in = document.getElementById(usr);
+  console.log ("AU: usr = ", usr);
+  logged_in.style.fontWeight = "normal";
+}
+
+// this function deactivates the users
+function deactivate_user(usr) {
+  const logged_in = document.getElementById(usr);
+  console.log("DU: logged in is ", logged_in);
+  logged_in.style.fontWeight = "normal";
+  logged_in.style.fontStyle = "italic";
+}
+
+// this function adds user to the chatbox
+function add_user(usr) {
+  const new_usr_row = document.createElement('TR');
+  var c = new_usr_row.insertCell(-1);
+
+  c.innerHTML = usr;
+  c.setAttribute("id", usr);
+  c.setAttribute("class", "user-listing");
+  c.setAttribute("data-user", usr);
+
+  let usrtrow = usr + "row"
+  new_usr_row.setAttribute("id", usrtrow);
+  new_usr_row.setAttribute("class", "user-listing");
+  new_usr_row.setAttribute("data-user", usr);
+  global_user_list.push(usr);
+
+  var emnt = new_usr_row.querySelector("td");
+  emnt.addEventListener("click", function() { dm_clickhandler (usr); });
+  document.getElementById('user_list').append(new_usr_row);
+}
+
+// this fucntion configures the channel by using AJAX request
+// to get the list of channel and setting the global_current_channel
+// Extract list of channels and populate variable and dropdown menu
+function configure_channels() {
+  const request = new XMLHttpRequest();
+  request.open('POST', '/query_channels');
+
+  if (localStorage.getItem('channel')) {
+    global_current_channel = localStorage.getItem('channel');
+  }
+  else {
+    global_current_channel = "General";
+  }
+
+  request.onload = () => {
+    const data = JSON.parse(request.responseText);
+
+  	if (data.success) {
+	     var channels = data["channel_list"];
+	     for (var i = 0, len = channels.length; i < len; i++) {
+		       if (channels[i] == global_current_channel) {
+		           add_channel(channels[i], 1);
+           }
+		       else {
+		           add_channel(channels[i], 0);
+		       }
+	     }
+     }
+     else {
+       console.log("API call failed !")
+     }
+
+// this fucntion adds a message to the displayed message list
+function add_message(msg) {
+    const new_row = document.createElement('TR');
+    var c = new_row.insertCell(0);
+
+    let ts = "<font class='tstamp'>" + msg["timestamp"] + "</font>";
+    let dn = " <font class='dname'> @" + msg["user_from"] + "</font><br>";
+
+    let n_msg = ts + dn + msg["msg_txt"];
+    c.innerHTML = n_msg;
+    document.getElementById('message_list').append(new_row);
+}
+  }
+
+  request.send();
+}
+
+
+// this function adds a message to the displayed message list
+function add_message(msg) {
+    const new_row = document.createElement('TR');
+    var c = new_row.insertCell(0);
+
+    let ts = "<font class='tstamp'>" + msg["timestamp"] + "</font>";
+    let dn = " <font class='dname'> @" + msg["user_from"] + "</font><br>";
+
+    let n_msg = ts + dn + msg["msg_txt"];
+    c.innerHTML = n_msg;
+    document.getElementById('message_list').append(new_row);
+}
+
+// this function clears messages when switching channels
+function clear_messages() {
+    var myNode = document.getElementById('message_list');
+
+    while (myNode.firstChild) {
+	     myNode.removeChild(myNode.firstChild);
+    }
+}
+
+
+// this function clears user list
+function clear_users() {
+    var myNode = document.getElementById('user_list');
+
+    while (myNode.firstChild) {
+	myNode.removeChild(myNode.firstChild);
+    }
+}
+
+//
+function configure_msgs(chn, isPub) {
+  clear_messages();
+  const request = new XMLHttpRequest();
+  request.open('POST', '/query_messages');
+
+  console.log("CM: msgType = " msgType)
+
+  request.onload = () => {
+    const data = JSON.parse(request.responseText);
+
+    if(data.success) {
+      console.log ("configure_msgs: success. messages =" data["channel_msgs"])
+      var messages = data["channel_msgs"];
+      for (var i = 0, len = messages.len, i < len; i < len; i++) {
+        add_message(messages[i])
+      }
+    }
+  }
+
+  // Add data to send with request for messages on this channel
+  const data = new FormData();
+  data.append('channel', chn);
+  data.append('displayname', displayname);
+  data.append('msg_type', msgType);
+
+  console.log ("CM: data = ", data)
+
+  // Send request
+  request.send(data);
+  return false;
+}

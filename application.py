@@ -17,7 +17,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # list of channels
-channels = ["General"]
+channel_list = ["General"]
 user_list = []
 
 # Dictionary of users & messages
