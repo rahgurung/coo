@@ -243,3 +243,40 @@ function configure_usrs() {
   request.send();
   return false;
 }
+
+// socketio logic is here
+document.addEventListener('DOMContentLoaded', () => {
+  var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+  let dn = document.getElementById("dname").innerHTML;
+  if (dn != displayname) {
+    displayname = dn;
+    localStorage.setItem("displayname", dn);
+  }
+
+  socket.on('connect', () => {
+    var id = socket.io.engine.id;
+    socket.emit("join", {"displayname": displayname, "room": id});
+    configure_channels();
+    configure_usrs();
+  });
+
+  document.getElementById('submit').disabled = true;
+  document.getElementById('msg_submit').disabled = true;
+
+  // Enable button only if there is text in the input field
+  document.getElementById('channel_name').onkeyup = () => {
+    if (document.getElementById('channel_name').value.length > 0)
+    document.getElementById('submit').disabled = false;
+    else
+      document.getElementById('submit').disabled = true;
+  };
+
+  document.getElementById('message_text').onkeyup = () => {
+  if (document.getElementById('message_text').value.length > 0)
+    document.getElementById('msg_submit').disabled = false;
+  else
+    document.getElementById('msg_submit').disabled = true;
+  };
+
+})
