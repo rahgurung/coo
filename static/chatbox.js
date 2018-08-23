@@ -244,7 +244,10 @@ function configure_usrs() {
   return false;
 }
 
-// socketio logic is here
+// socketio logic is here, which configures the submit buttons
+// add new announced channel to channel listing
+// when a new mesage is announced , adds to message list
+// and submits channel, timestamp, user_from, msg_txt
 document.addEventListener('DOMContentLoaded', () => {
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -264,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('submit').disabled = true;
   document.getElementById('msg_submit').disabled = true;
 
-  // Enable button only if there is text in the input field
   document.getElementById('channel_name').onkeyup = () => {
     if (document.getElementById('channel_name').value.length > 0)
     document.getElementById('submit').disabled = false;
@@ -279,4 +281,51 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('msg_submit').disabled = true;
   };
 
-})
+  document.getElementById("new_channel").onsubmit = () => {
+    var chn = document.getElementById('channel_name').value;
+    if(global_channel_list.includes(chn)) {
+      alert ("Channel Already Exists");
+    }
+    else {
+      document.getElementById('channel_name').value = "";
+      document.getElementById('submit').disabled = true;
+      socket.emit('submit channel', {'channel': chn});
+    }
+    return false;
+  };
+
+  socket.on('announce channel', data => {
+    add_channel(data["channel"], 0);
+  });
+
+  socket.on('new user', data => {
+    if ((data["username"] == displayname) || (global_user_list.includes(data["username"]))) {
+      return false;
+    }
+    else {
+      add_user(data["username"]);
+    }
+  });
+
+  socket.io( 'announce message', data => {
+    console.log ("AM: arrived. channel = ", data["channel"]);
+    if (data["channel"] == global_current_channel) {
+      console.log("announce message: msgType = ", data["msg_type"], "channel = ", data["channel"]);
+  		add_message(data);
+    }
+  });
+
+  document.getElementById("new_message").onsubmit = () => {
+    var val = document.getElementById('message_text').value;
+    var dt = new Date();
+    var dn = document.getElementById('displayname').value;
+
+    document.getElementById('message_text').value = "";
+    document.getElementById('msg_submit').disabled = true;
+    chn = global_current_channel;
+
+    socket.emit('submit message', {'msg_txt': val, 'channel': chn, 'timestamp': dt, 'user_from': displayname});
+    return false;
+  };
+
+});
