@@ -183,7 +183,10 @@ function clear_users() {
     }
 }
 
-//
+// this function configure messages by making a AJAX request and then
+// adding messages using add_message
+// add data to send with request for messages on this channel
+
 function configure_msgs(chn, isPub) {
   clear_messages();
   const request = new XMLHttpRequest();
@@ -203,7 +206,6 @@ function configure_msgs(chn, isPub) {
     }
   }
 
-  // Add data to send with request for messages on this channel
   const data = new FormData();
   data.append('channel', chn);
   data.append('displayname', displayname);
@@ -211,7 +213,33 @@ function configure_msgs(chn, isPub) {
 
   console.log ("CM: data = ", data)
 
-  // Send request
   request.send(data);
+  return false;
+}
+
+// this configures the users of channels, extracts
+// dictionary of messages and populate message pane
+function configure_usrs() {
+  clear_users();
+
+  const request = new XMLHttpRequest();
+  request.open('POST', '/query_users');
+  request.onload = () => {
+	   const data = JSON.parse(request.responseText);
+
+	   if (data.success) {
+	      users = data["active_users"]
+	      for (var i = 0, len = users.length; i < len; i++) {
+		        if (users[i] != 'None') {
+		        console.log ("configure:users: adding ", users[i]);
+		        add_user(users[i]);
+		        }
+	      }
+	   }
+	   else {
+	   console.log("API query users failed");
+     }
+  }
+  request.send();
   return false;
 }
