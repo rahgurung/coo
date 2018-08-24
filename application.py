@@ -11,11 +11,6 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# configure session to use filesystem
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
-
 # list of channels
 channel_list = ["General"]
 user_list = []
@@ -54,7 +49,7 @@ def logout():
     return render_template("index.html")
 
 
-# this handles the whole chatrooms
+# this handles the chatrooms
 @app.route("/chatbox", methods=["POST", "GET"])
 def chatbox():
      user = request.form.get("displayname")
@@ -204,3 +199,6 @@ def on_leave(data):
     leave_room(room)
     del Rooms[username]
     emit("user logged out", {"username": username}, broadcast=True)
+
+if __name__ == "__main__":
+    app.run()
