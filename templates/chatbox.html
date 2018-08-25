@@ -2,14 +2,13 @@
 {% extends "layout.html" %}
 
 <!-- further extending title tag -->
-{% block head %}
+{% block javascripts %}
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   <script src="{{ url_for('static', filename='chatbox.js') }}"></script>
 {% endblock %}
 
-<!-- further extending title tag -->
-{% block title %}
-  {{channel_name}}
+{% block heading %}
+	Coo Chat Messaging
 {% endblock %}
 
 <!-- futher extending body tag -->
@@ -30,7 +29,7 @@
     <p>
     <form id="new_channel">
       <input id="channel_name" type="text" name="new_channel" class="chn_name" autocomplete="off" autofocus placeholder="New Channel">
-      <input class="btn btn-primary" id="submit" type=submit>
+      <input id="submit" type=submit>
     </form>
     <p>
       Direct Messages<br>

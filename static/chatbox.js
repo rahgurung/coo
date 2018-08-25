@@ -9,14 +9,14 @@ let displayname = localStorage.getItem('displayname');;
 // chn means channel parameter here
 function clickhandler(chn) {
   if (global_channel_list.includes(global_current_channel)) {
-    document.getElementbyId(global_current_channel).style.fontWeight = "normal";
+    document.getElementById(global_current_channel).style.fontWeight = "normal";
   }
 
   global_current_channel = chn;
   msgType = "PUBLIC";
-  let header = document.getElementbyId("message_header");
+  let header = document.getElementById("message_header");
 
-  document.getElementbyId(global_current_channel).style.fontWeight = "bold";
+  document.getElementById(global_current_channel).style.fontWeight = "bold";
   header.innerHTML = " Messages on " + global_current_channel + "channel";
   localStorage.setItem("channel", global_current_channel)
   configure_msgs(global_current_channel, msgType)
@@ -105,6 +105,7 @@ function add_user(usr) {
 // to get the list of channel and setting the global_current_channel
 // Extract list of channels and populate variable and dropdown menu
 function configure_channels() {
+  console.log("configuring channels");
   const request = new XMLHttpRequest();
   request.open('POST', '/query_channels');
 
@@ -192,16 +193,16 @@ function configure_msgs(chn, isPub) {
   const request = new XMLHttpRequest();
   request.open('POST', '/query_messages');
 
-  console.log("CM: msgType = " msgType)
+  console.log("CM: msgType = ", msgType);
 
   request.onload = () => {
     const data = JSON.parse(request.responseText);
 
     if(data.success) {
-      console.log ("configure_msgs: success. messages =" data["channel_msgs"])
+      console.log ("configure_msgs: success. messages =", data["channel_msgs"]);
       var messages = data["channel_msgs"];
-      for (var i = 0, len = messages.len, i < len; i < len; i++) {
-        add_message(messages[i])
+      for (var i = 0, len = messages.length; i < len; i++) {
+        add_message(messages[i]);
       }
     }
   }
@@ -249,15 +250,19 @@ function configure_usrs() {
 // when a new mesage is announced , adds to message list
 // and submits channel, timestamp, user_from, msg_txt
 document.addEventListener('DOMContentLoaded', () => {
+
+  console.log("hey dom content is just loaded");
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
   let dn = document.getElementById("dname").innerHTML;
+
   if (dn != displayname) {
     displayname = dn;
     localStorage.setItem("displayname", dn);
   }
 
   socket.on('connect', () => {
+    console.log("socket io connected");
     var id = socket.io.engine.id;
     socket.emit("join", {"displayname": displayname, "room": id});
     configure_channels();
@@ -307,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  socket.io( 'announce message', data => {
+  socket.on( 'announce message', data => {
     console.log ("AM: arrived. channel = ", data["channel"]);
     if (data["channel"] == global_current_channel) {
       console.log("announce message: msgType = ", data["msg_type"], "channel = ", data["channel"]);

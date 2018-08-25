@@ -85,6 +85,7 @@ div {
   width: 50%;
   padding: 5px;
 }
+
 #small {
   width: 25%;
 }
@@ -150,6 +151,7 @@ td {
 .hoverTable tr{
    background: #f7f6b9;
 }
+
      /* Define the hover highlight color for the table row */
 .hoverTable tr:hover {
    background-color: #ffff99;
