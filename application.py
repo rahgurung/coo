@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, url_for, request, redirect, jsonify
+from flask import Flask, session, render_template, url_for, request, redirect, jsonify, Response
 from flask_session import Session
 import random, json, time, datetime
 

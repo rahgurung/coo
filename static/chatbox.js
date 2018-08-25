@@ -34,7 +34,7 @@ function dm_clickhandler(usr) {
   global_current_channel = usr;
   document.getElementById(usr).style.fontWeight = "bold";
 
-  hdr.innerHTML = "Conversations with " + usr;
+  header.innerHTML = "Conversations with " + usr;
   configure_msgs(usr, msgType);
 }
 
