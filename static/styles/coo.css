@@ -77,8 +77,11 @@ div {
   margin: 20px;
 }
 
-.centered {
+nav {
+  color: white;
+}
 
+.centered {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -94,7 +97,7 @@ h1 {
   font-family: "Times New Roman", sans-serif;
   font-size: 24pt;
   text-align: center;
-  color: black;
+  color: white;
 }
 
 h2 {
@@ -102,6 +105,10 @@ h2 {
   font-size: 18pt;
   text-align: center;
   color: black;
+}
+
+.heading1 {
+  color: white;
 }
 
 .dname {
@@ -163,6 +170,11 @@ td {
    width: 100%;
    height: auto;
 }
+
+#message_header {
+  color: white;
+}
+
 
 #message_list td {
    padding: 7px;

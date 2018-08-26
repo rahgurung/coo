@@ -199,6 +199,3 @@ def on_leave(data):
     leave_room(room)
     del Rooms[username]
     emit("user logged out", {"username": username}, broadcast=True)
-
-if __name__ == "__main__":
-    app.run()
