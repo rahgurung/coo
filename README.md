@@ -1,3 +1,5 @@
+This is my personal project in which I have implemented a chat app.
+
 # coo
 coo: online messaging service based on Flask.
 
