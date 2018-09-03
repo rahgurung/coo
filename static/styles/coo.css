@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+/* this class selector colors the font inside display_index */
+.display_index {
+  color: white;
+}
 
   /* Style the header */
 header {
@@ -9,6 +13,10 @@ header {
   padding: 30px;
   text-align: center;
   font-size: 18pt;
+}
+
+h4 {
+  color: white;
 }
 
 nav {
@@ -148,7 +156,8 @@ td {
 
 .hoverTable{
    width:100%;
-   border-collapse:collapse;
+   border-collapse: collapse;
+   color: black;
 }
      /* .hoverTable td{
      /* 	padding:7px; border:#4e95f4 1px solid;
