@@ -2,7 +2,7 @@ var global_channel_list = [];
 var global_user_list = [];
 var global_current_channel;
 var msgType = "PUBLIC";
-let displayname = localStorage.getItem('displayname');;
+let displayname = localStorage.getItem('displayname');
 
 
 // this function weighs and unweighs the channel
@@ -251,7 +251,7 @@ function configure_usrs() {
 // and submits channel, timestamp, user_from, msg_txt
 document.addEventListener('DOMContentLoaded', () => {
 
-  console.log("hey dom content is just loaded");
+  console.log("hey dom content is just loaded !");
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
   let dn = document.getElementById("dname").innerHTML;

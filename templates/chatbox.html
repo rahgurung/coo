@@ -14,13 +14,16 @@
 <!-- futher extending body tag -->
 {% block body %}
 
+<!-- this is the upper header which displays the name-->
 <header>
 	  Logged in as <div id="dname">{{ name }}</div>
 </header>
 
 <section>
+
+  <!-- this is the left portion of HTML to handle selecting
+    channels, creation of channels and direct messaging someone -->
   <nav>
-  
     Channels <p>
     <p>
       <table class="hoverTable" id="hoverTable">
@@ -40,6 +43,7 @@
       <button id="logout_button" type=submit>Log Out</button>
   </nav>
 
+<!-- this portion of page is used to handle the messages and message sender -->
   <article>
     <h4 id="message_header">Messages</h4>
     <table class="hoverTable" id="message_list">
@@ -51,7 +55,6 @@
       <input type="hidden" value= {{ name }} id="displayname">
       <input id="msg_submit" type="submit">
     </form>
-
   </article>
 </section>
 {% endblock %}
