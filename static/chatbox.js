@@ -146,10 +146,6 @@ function add_message(msg) {
     c.innerHTML = n_msg;
     document.getElementById('message_list').append(new_row);
 }
-  }
-
-  request.send();
-}
 
 // this function clears messages when switching channels
 function clear_messages() {
@@ -159,7 +155,6 @@ function clear_messages() {
 	     myNode.removeChild(myNode.firstChild);
     }
 }
-
 
 // this function clears user list
 function clear_users() {
@@ -173,7 +168,6 @@ function clear_users() {
 // this function configure messages by making a AJAX request and then
 // adding messages using add_message
 // add data to send with request for messages on this channel
-
 function configure_msgs(chn, isPub) {
   clear_messages();
   const request = new XMLHttpRequest();
