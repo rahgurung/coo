@@ -151,20 +151,6 @@ function add_message(msg) {
   request.send();
 }
 
-
-// this function adds a message to the displayed message list
-function add_message(msg) {
-    const new_row = document.createElement('TR');
-    var c = new_row.insertCell(0);
-
-    let ts = "<font class='tstamp'>" + msg["timestamp"] + "</font>";
-    let dn = " <font class='dname'> @" + msg["user_from"] + "</font><br>";
-
-    let n_msg = ts + dn + msg["msg_txt"];
-    c.innerHTML = n_msg;
-    document.getElementById('message_list').append(new_row);
-}
-
 // this function clears messages when switching channels
 function clear_messages() {
     var myNode = document.getElementById('message_list');
