@@ -133,6 +133,8 @@ function configure_channels() {
      else {
        console.log("API call failed !")
      }
+  }
+}
 
 // this fucntion adds a message to the displayed message list
 function add_message(msg) {
@@ -225,13 +227,13 @@ function configure_usrs() {
   return false;
 }
 
-// socketio logic is here, which configures the submit buttons
+// socketio logic is here, which 
 // add new announced channel to channel listing
 // when a new mesage is announced , adds to message list
 // and submits channel, timestamp, user_from, msg_txt
 document.addEventListener('DOMContentLoaded', () => {
 
-  console.log("hey dom content is just loaded !");
+  console.log("Hurrah ! DOM is loaded !");
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
   let dn = document.getElementById("dname").innerHTML;
@@ -242,29 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   socket.on('connect', () => {
-    console.log("socket io connected");
+    console.log("Socket.IO is connected !");
     var id = socket.io.engine.id;
     socket.emit("join", {"displayname": displayname, "room": id});
     configure_channels();
     configure_usrs();
   });
-
-  document.getElementById('submit').disabled = true;
-  document.getElementById('msg_submit').disabled = true;
-
-  document.getElementById('channel_name').onkeyup = () => {
-    if (document.getElementById('channel_name').value.length > 0)
-    document.getElementById('submit').disabled = false;
-    else
-      document.getElementById('submit').disabled = true;
-  };
-
-  document.getElementById('message_text').onkeyup = () => {
-  if (document.getElementById('message_text').value.length > 0)
-    document.getElementById('msg_submit').disabled = false;
-  else
-    document.getElementById('msg_submit').disabled = true;
-  };
 
   document.getElementById("new_channel").onsubmit = () => {
     var chn = document.getElementById('channel_name').value;

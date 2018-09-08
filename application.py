@@ -41,20 +41,17 @@ channel_messages = {
 def index():
     return render_template("index.html")
 
-
 # this function handles the logout button and returns
 # index page as a result
 @app.route("/logout", methods=["POST"])
 def logout():
     return render_template("index.html")
 
-
 # this handles the chatrooms
 @app.route("/chatbox", methods=["POST", "GET"])
 def chatbox():
      user = request.form.get("displayname")
      return render_template("chatbox.html", name=user)
-
 
 # this is a event of submitting channel to create
 # a new channel
@@ -63,8 +60,6 @@ def new_channel(data):
     channel = data["channel"]
     channel_list.append(channel)
     emit("announce channel", {"channel": channel}, broadcast=True)
-    return 1
-
 
 # this is the backend to support querying for
 # list of new available channels
@@ -72,13 +67,11 @@ def new_channel(data):
 def query_channels():
     return jsonify({"success": True, "channel_list": channel_list})
 
-
 # this is the backend to support querying for
 # users in a channel
 @app.route("/query_users", methods=["POST"])
 def query_users():
     return jsonify({"success": True, "active_users": user_list})
-
 
 # this is the backend to support querying for
 # messages in a channel
@@ -105,7 +98,6 @@ def fetch_messages():
                 return jsonify({"success": True, "channel_msgs": all_msgs})
     else:
         return jsonify({"success": False, "error_msg": "No messages"})
-
 
 # this is the socketio backend to handle the submit messages
 # event in the flask, it shows public channel
@@ -157,7 +149,6 @@ def new_message(data):
             emit("announce message", msg, room=Rooms[channel])
             return jsonify ({"success": True, "msg_type": "PRIVATE"})
 
-
 # join channel event for joining the channel or room
 @socketio.on('join')
 def on_join(data):
@@ -178,7 +169,6 @@ def on_join(data):
     print (f"username ", username, "has room ", Rooms[username])
     return jsonify ({"success": True})
 
-
 # socketio logout event to log user out
 @socketio.on('logout user')
 def on_leave(data):
@@ -188,7 +178,6 @@ def on_leave(data):
     leave_room(room)
     del Rooms[username]
     emit("user logged out", {"username": username}, broadcast=True)
-
 
 # socketio leave backend to support to leave a channel or room
 @socketio.on('leave')
