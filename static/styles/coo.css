@@ -5,6 +5,11 @@
 /* this class selector colors the font inside display_index */
 .display_index {
   color: white;
+  text-align: center;
+}
+
+#login_form {
+  text-align: center;
 }
 
   /* Style the header */
