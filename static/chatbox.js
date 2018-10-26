@@ -107,7 +107,7 @@ function add_user(usr) {
 function configure_channels() {
   console.log("configuring channels");
   const request = new XMLHttpRequest();
-  request.open('POST', '/query_channels');
+  request.open('POST', '/get_channels');
 
   if (localStorage.getItem('channel')) {
     global_current_channel = localStorage.getItem('channel');
@@ -173,7 +173,7 @@ function clear_users() {
 function configure_msgs(chn, isPub) {
   clear_messages();
   const request = new XMLHttpRequest();
-  request.open('POST', '/query_messages');
+  request.open('POST', '/get_messages');
 
   console.log("CM: msgType = ", msgType);
 
@@ -206,7 +206,7 @@ function configure_usrs() {
   clear_users();
 
   const request = new XMLHttpRequest();
-  request.open('POST', '/query_users');
+  request.open('POST', '/get_users');
   request.onload = () => {
 	   const data = JSON.parse(request.responseText);
 

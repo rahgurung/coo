@@ -63,19 +63,19 @@ def new_channel(data):
 
 # this is the backend to support querying for
 # list of new available channels
-@app.route("/query_channels", methods=["POST"])
-def query_channels():
+@app.route("/get_channels", methods=["POST"])
+def get_channels():
     return jsonify({"success": True, "channel_list": channel_list})
 
 # this is the backend to support querying for
 # users in a channel
-@app.route("/query_users", methods=["POST"])
-def query_users():
+@app.route("/get_users", methods=["POST"])
+def get_users():
     return jsonify({"success": True, "active_users": user_list})
 
 # this is the backend to support querying for
 # messages in a channel
-@app.route("/query_messages", methods=["POST"])
+@app.route("/get_messages", methods=["POST"])
 def fetch_messages():
     channel = request.form.get("channel")
     dn = request.form.get("displayname")
