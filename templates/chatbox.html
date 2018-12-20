@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block heading %}
+<h1>
 	Coo Chat Messaging
+</h1>
 {% endblock %}
 
 <!-- futher extending body tag -->
@@ -17,7 +19,9 @@
 
 <!-- this is the upper header which displays the name-->
 <header>
-	  Logged in as <div id="dname">{{ name }}</div>
+  <h2>
+    Logged in as <div id="dname">{{ name }}</div>
+  </h2>
 </header>
 
 <section>
@@ -33,15 +37,15 @@
       Create New Channel
     <p>
     <form id="new_channel">
-      <input id="channel_name" type="text" name="new_channel" class="chn_name" autocomplete="off" autofocus placeholder="New Channel">
-      <input id="submit" type=submit>
+      <input id="channel_name" type="text" name="new_channel" class="chn_name form-control" autocomplete="off" autofocus placeholder="New Channel">
+      <input id="submit" class="btn btn-primary" type=submit>
     </form>
     <p>
       Direct Messages<br>
       <table class="hoverTable" id="user_list">
 	    </table>
       <p>
-      <button id="logout_button" type=submit>Log Out</button>
+      <button id="logout_button" class="btn btn-secondary" type=submit>Log Out</button>
   </nav>
 
 <!-- this portion of page is used to handle the messages and message sender -->
@@ -51,10 +55,10 @@
 	  </table>
     <h4>Enter new message</h4>
     <form id="new_message">
-      <textarea class="newchn_msg" id="message_text" placeholder="Enter message here" wrap="soft">
+      <textarea class="newchn_msg form-control" id="message_text" placeholder="Enter message here" wrap="soft">
 	    </textarea>
       <input type="hidden" value= {{ name }} id="displayname">
-      <input id="msg_submit" type="submit">
+      <input id="msg_submit" class="btn btn-primary" type="submit">
     </form>
   </article>
 </section>
